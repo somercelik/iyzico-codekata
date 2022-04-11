@@ -21,6 +21,7 @@ public class Transaction {
 
     public boolean executeTransaction() {
         //TODO: Execute implementation needed
+        return true;
     }
 
     public Transaction(String id, Date date, String discountCode) {
