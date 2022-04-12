@@ -31,7 +31,7 @@ class FileLoggerTest {
         fileInputStream.close();
         fileInputStream = new FileInputStream("logs.txt");
         scanner = new Scanner(fileInputStream);
-        FileLogger.getInstance().log("4543590000000006");
+        //FileLogger.getInstance().log("4543590000000006");
         while (scanner.hasNextLine()){
             scanner.nextLine();
             newLineCount++;

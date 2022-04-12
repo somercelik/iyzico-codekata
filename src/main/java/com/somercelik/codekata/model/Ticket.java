@@ -25,10 +25,13 @@ public class Ticket implements Discountable {
     }
 
     public Ticket(Ticket source) {
-        this.name = source.name;
-        this.startDate = source.startDate;
-        this.endDate = source.endDate;
-        this.price = source.price;
+        this(source.name, source.startDate, source.endDate, source.price);
+    }
+
+    @Override
+    public void discount(double rate) {
+        double discountAmount = this.getPrice() * rate;
+        this.setPrice(this.getPrice() - discountAmount);
     }
 
     public String getName() {
@@ -63,9 +66,4 @@ public class Ticket implements Discountable {
         this.price = price;
     }
 
-    @Override
-    public void discount(double rate) {
-        double discountAmount = this.getPrice() * rate;
-        this.setPrice(this.getPrice() - discountAmount);
-    }
 }

@@ -2,6 +2,7 @@ package com.somercelik.codekata.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,12 +13,18 @@ import java.util.Date;
  * @since 2022-04-11
  */
 public class Utils {
-    private static final String DATE_PATTERN = "dd.MM.yyyy HH:mm:ss";
+    private static final String DATE_TIME_PATTERN = "dd.MM.yyyy HH:mm:ss";
+    private static final String DATE_PATTERN = "dd.MM.yyyy";
     private static final String LINE_TERM = "\n";
 
     public static String getFormattedDate(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_PATTERN);
         return simpleDateFormat.format(date);
+    }
+
+    public static Date parseDate(String dateStr) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_PATTERN);
+        return simpleDateFormat.parse(dateStr);
     }
 
     public static String padNumber(int number, int padding) {
