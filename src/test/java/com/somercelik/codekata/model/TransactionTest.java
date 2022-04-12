@@ -1,7 +1,6 @@
 package com.somercelik.codekata.model;
 
 import com.somercelik.codekata.model.data.BankDataStore;
-import com.somercelik.codekata.model.data.TicketDataStore;
 import com.somercelik.codekata.util.Utils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,77 +15,72 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author s84240320
  * @since 2022-04-11
  */
-class TransactionTest {
-    static Bank bank = BankDataStore.BANKS[0];
-    static Transaction[] transactions;
-    static Card card;
 
+class TransactionTest {
+    static Card card;
     @BeforeAll
     public static void setup() throws ParseException {
+        Bank bank = BankDataStore.BANKS.get(0);
         card = new Card(
                 "asdas",
                 "32",
                 bank,
                 Card.CardProvider.MASTER_CARD,
-                Card.CardType.CREDIT_CARD);
-
-
-        transactions = new Transaction[]{
-                new Transaction(
-                        "001",
-                        Utils.parseDate("02.12.2021"),
-                        card,
-                        null
-                ),
-                new Transaction(
-                        "002",
-                        Utils.parseDate("02.12.2021"),
-                        card,
-                        null
-                ),
-                new Transaction(
-                        "003",
-                        Utils.parseDate("03.03.2022"),
-                        card,
-                        null
-                ),
-                new Transaction(
-                        "004",
-                        Utils.parseDate("13.03.2022"),
-                        card,
-                        "GAMMA"
-                ),
-                new Transaction(
-                        "005",
-                        Utils.parseDate("13.03.2022"),
-                        card,
-                        "FOWLER"
-                )
-        };
+                Card.Type.CREDIT_CARD);
     }
 
     @Test
-    void testTransaction1() {
-        assertEquals(250, transactions[0].getTicket().getPrice());
+    void testTransaction1() throws ParseException {
+        Transaction transaction = new Transaction(
+                "001",
+                Utils.parseDate("02.12.2021"),
+                card,
+                null
+        );
+        assertEquals(250, transaction.getTicket().getPrice());
     }
 
     @Test
-    void testTransaction2() {
-        assertEquals(250, transactions[1].getTicket().getPrice());
+    void testTransaction2() throws ParseException {
+        Transaction transaction = new Transaction(
+                "002",
+                Utils.parseDate("02.12.2021"),
+                card,
+                null
+        );
+        assertEquals(250, transaction.getTicket().getPrice());
     }
 
     @Test
-    void testTransaction3() {
-        assertEquals(750, transactions[2].getTicket().getPrice());
+    void testTransaction3() throws ParseException {
+        Transaction transaction = new Transaction(
+                "003",
+                Utils.parseDate("03.03.2022"),
+                card,
+                null
+        );
+        assertEquals(750, transaction.getTicket().getPrice());
     }
 
     @Test
-    void testTransaction4() {
-        assertEquals(675, transactions[3].getTicket().getPrice());
+    void testTransaction4() throws ParseException {
+        Transaction transaction = new Transaction(
+                "004",
+                Utils.parseDate("13.03.2022"),
+                card,
+                "GAMMA"
+        );
+        assertEquals(675, transaction.getTicket().getPrice());
     }
 
     @Test
-    void testTransaction5() {
-        assertEquals(750, transactions[4].getTicket().getPrice());
+    void testTransaction5() throws ParseException {
+        Transaction transaction = new Transaction(
+                "005",
+                Utils.parseDate("13.03.2022"),
+                card,
+                "FOWLER"
+        );
+        assertEquals(750, transaction.getTicket().getPrice());
     }
 }

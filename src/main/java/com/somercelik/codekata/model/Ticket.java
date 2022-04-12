@@ -15,9 +15,9 @@ public class Ticket implements Discountable {
     private String name;
     private Date startDate;
     private Date endDate;
-    private double price;
+    private float price;
 
-    public Ticket(String name, Date startDate, Date endDate, double price) {
+    public Ticket(String name, Date startDate, Date endDate, float price) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -29,8 +29,8 @@ public class Ticket implements Discountable {
     }
 
     @Override
-    public void discount(double rate) {
-        double discountAmount = this.getPrice() * rate;
+    public void discount(float rate) {
+        float discountAmount = this.getPrice() * rate;
         this.setPrice(this.getPrice() - discountAmount);
     }
 
@@ -58,12 +58,16 @@ public class Ticket implements Discountable {
         this.endDate = endDate;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
+    @Override
+    protected Object clone(){
+        return new Ticket(this);
+    }
 }

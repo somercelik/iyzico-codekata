@@ -10,25 +10,15 @@ import java.util.Date;
  */
 public class YearlyDiscount {
     private String code;
-    private int month;
-    private int day;
-    private double rate;
+    private Date startDate;
+    private Date endDate;
+    private float rate;
 
-    public YearlyDiscount(String code, int month, int day, double rate) {
+    public YearlyDiscount(String code, Date startDate, Date endDate, float rate) {
         this.code = code;
-        this.month = month;
-        this.day = day;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.rate = rate;
-    }
-
-    public YearlyDiscount(YearlyDiscount source) {
-        if(source == null) {
-            return;
-        }
-        this.code = source.code;
-        this.month = source.month;
-        this.day = source.day;
-        this.rate = source.rate;
     }
 
     public String getCode() {
@@ -39,27 +29,27 @@ public class YearlyDiscount {
         this.code = code;
     }
 
-    public int getMonth() {
-        return month;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public int getDay() {
-        return day;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setDay(int day) {
-        this.day = day;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
-    public double getRate() {
+    public float getRate() {
         return rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(float rate) {
         this.rate = rate;
     }
 }

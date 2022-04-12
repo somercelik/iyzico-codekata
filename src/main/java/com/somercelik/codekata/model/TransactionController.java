@@ -5,7 +5,6 @@ import com.somercelik.codekata.util.Utils;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * TransactionController
@@ -26,7 +25,7 @@ public class TransactionController {
         return new Transaction(
                 values[0],
                 Utils.parseDate(values[1]),
-                new Card(values[2],"083", BankDataStore.BANKS[0], Card.CardProvider.MASTER_CARD, Card.CardType.CREDIT_CARD),
+                new Card(values[2],"083", BankDataStore.BANKS.get(0), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD),
                 values[3]
                 );
     }

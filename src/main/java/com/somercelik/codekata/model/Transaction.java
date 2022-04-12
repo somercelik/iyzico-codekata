@@ -5,8 +5,6 @@ import com.somercelik.codekata.model.data.DiscountCodesDataStore;
 import com.somercelik.codekata.model.data.TicketDataStore;
 import com.somercelik.codekata.util.Utils;
 
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -23,15 +21,15 @@ public class Transaction {
     private Ticket ticket;
     private Card card;
     private YearlyDiscount yearlyDiscount;
+
     enum Status {
         PENDING,
         FAIL,
         SUCCESS
     }
 
-
     public boolean executeTransaction() {
-        if (!this.status.equals(Status.PENDING)){
+        if (!this.status.equals(Status.PENDING)) {
             return false;
         }
         LOG.log(this, new Date());
@@ -45,30 +43,37 @@ public class Transaction {
         this.ticket = this.getTicketFromDate(date);
         this.card = card;
         this.status = Status.PENDING;
-        if(discountCode != null){
+        if (discountCode != null) {
             this.yearlyDiscount = DiscountCodesDataStore.DISCOUNTS.get(discountCode);
         }
 
-        if(ticket == null) {
+        if (ticket == null) {
             throw new IllegalArgumentException("No Ticket found for given date, " + Utils.getFormattedDate(date));
         }
+        discountIfApplicable();
+    }
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int transactionMonth = cal.get(Calendar.MONTH) + 1;
-        int transactionDay = cal.get(Calendar.DAY_OF_MONTH);
-        if (yearlyDiscount != null
-                && transactionMonth == yearlyDiscount.getMonth()
-                && transactionDay == yearlyDiscount.getDay()) {
-            ticket.discount(yearlyDiscount.getRate());
+    private void discountIfApplicable() {
+        if(this.yearlyDiscount == null) {
+            return;
+        }
+
+        boolean isDiscountApplicable = this.yearlyDiscount.getStartDate().getTime() <= this.date.getTime()
+                        && this.yearlyDiscount.getEndDate().getTime() >= this.date.getTime();
+        if (isDiscountApplicable) {
+            this.ticket.discount(this.yearlyDiscount.getRate());
         }
     }
 
     private Ticket getTicketFromDate(Date date) {
-        return Arrays.stream(TicketDataStore.TICKETS)
-                .filter(ticket -> date.after(ticket.getStartDate()) && date.before(ticket.getEndDate()))
+        return (Ticket) TicketDataStore.TICKETS.stream()
+                .filter(
+                        t -> {
+                            return date.after(t.getStartDate()) && date.before(t.getEndDate());
+                        })
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(RuntimeException::new)
+                .clone();
     }
 
     public Transaction(Transaction source) {
@@ -90,7 +95,6 @@ public class Transaction {
     public void setDate(Date date) {
         this.date = date;
     }
-
 
     public Status getStatus() {
         return status;

@@ -7,5 +7,5 @@ package com.somercelik.codekata.model.impl;
  * @since 2022-04-11
  */
 public interface Discountable {
-    public void discount(double rate);
+    public void discount(float rate);
 }

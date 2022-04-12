@@ -11,18 +11,21 @@ public class Card {
     private String cvv;
     private Bank bank;
     private CardProvider provider;
-    private CardType cardType;
+    private Type type;
 
-    public Card(String cardNumber, String cvv, Bank bank, CardProvider provider, CardType cardType) {
+    public Card(String cardNumber, String cvv, Bank bank, CardProvider provider, Type type) {
+        if(!bank.getAllowedCardTypes().contains(type)){
+            throw new IllegalArgumentException(String.format("The bank %s does not allow type %s", bank.getName(), type));
+        }
         this.cardNumber = cardNumber;
         this.cvv = cvv;
         this.bank = bank;
         this.provider = provider;
-        this.cardType = cardType;
+        this.type = type;
     }
 
     public Card(Card source) {
-        this(source.cardNumber, source.cvv, source.bank, source.provider, source.cardType);
+        this(source.cardNumber, source.cvv, source.bank, source.provider, source.type);
     }
 
 
@@ -58,20 +61,20 @@ public class Card {
         this.provider = provider;
     }
 
-    public CardType getCardType() {
-        return cardType;
+    public Type getCardType() {
+        return type;
     }
 
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
+    public void setCardType(Type type) {
+        this.type = type;
     }
 
-    enum CardProvider {
+    public enum CardProvider {
         VISA,
         MASTER_CARD
     }
 
-    enum CardType {
+    public enum Type {
         DEBIT_CARD,
         CREDIT_CARD
     }
