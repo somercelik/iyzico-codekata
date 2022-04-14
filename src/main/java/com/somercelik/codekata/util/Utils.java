@@ -1,10 +1,12 @@
 package com.somercelik.codekata.util;
 
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 /**
  * Utils
@@ -41,5 +43,18 @@ public class Utils {
         } finally {
             fileWriter.close();
         }
+    }
+
+    public static int getTextFileLineCount(String path) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(path);
+        Scanner scanner = new Scanner(fileInputStream);
+        int lineCount = 0;
+        while (scanner.hasNextLine()){
+            scanner.nextLine();
+            lineCount++;
+        }
+        scanner.close();
+        fileInputStream.close();
+        return lineCount;
     }
 }

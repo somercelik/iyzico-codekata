@@ -1,8 +1,9 @@
 package com.somercelik.codekata.model;
 
-import com.somercelik.codekata.logger.FileLogger;
+import com.somercelik.codekata.io.FileWriter;
 import com.somercelik.codekata.model.data.DiscountCodesDataStore;
 import com.somercelik.codekata.model.data.TicketDataStore;
+import com.somercelik.codekata.service.IyzicoTransactionValidationService;
 import com.somercelik.codekata.util.Utils;
 
 import java.util.Date;
@@ -14,26 +15,43 @@ import java.util.Date;
  * @since 2022-04-11
  */
 public class Transaction {
-    private static final FileLogger LOG = FileLogger.getInstance();
+    private static final FileWriter LOG = FileWriter.getInstance();
     private String id;
     private Date date;
     private Status status;
     private Ticket ticket;
     private Card card;
     private YearlyDiscount yearlyDiscount;
+    private String validationMessage = "";
 
-    enum Status {
+    public enum Status {
         PENDING,
         FAIL,
         SUCCESS
     }
 
     public boolean executeTransaction() {
-        if (!this.status.equals(Status.PENDING)) {
+        boolean isValidated = new IyzicoTransactionValidationService().validateTransaction(this);
+        if(!isValidated) {
             return false;
         }
-        LOG.log(this, new Date());
-        this.status = Status.SUCCESS;
+
+        boolean isCardDetailsValid = isCardDetailsValid(this.getCard());
+        if(!isCardDetailsValid) {
+            return false;
+        }
+        this.setStatus(Status.SUCCESS);
+        FileWriter.getInstance().outputTransaction(this);
+        FileWriter.getInstance().logTransaction(this, new Date());
+
+        return true;
+    }
+
+    private boolean isCardDetailsValid(Card card) {
+        if(!card.getBank().getAllowedCardTypes().contains(card.getCardType())){
+            validationMessage += String.format("The bank %s does not allow type %s", card.getBank().getName(), card.getCardType());
+            return false;
+        }
         return true;
     }
 
@@ -74,10 +92,6 @@ public class Transaction {
                 .findFirst()
                 .orElseThrow(RuntimeException::new)
                 .clone();
-    }
-
-    public Transaction(Transaction source) {
-        this(source.id, source.date, source.card, source.getYearlyDiscount().getCode());
     }
 
     public String getId() {
@@ -122,6 +136,10 @@ public class Transaction {
 
     public YearlyDiscount getYearlyDiscount() {
         return yearlyDiscount;
+    }
+
+    public String getValidationMessage() {
+        return validationMessage;
     }
 
     public void setYearlyDiscount(YearlyDiscount yearlyDiscount) {

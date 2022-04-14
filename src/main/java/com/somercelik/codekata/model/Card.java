@@ -14,9 +14,6 @@ public class Card {
     private Type type;
 
     public Card(String cardNumber, String cvv, Bank bank, CardProvider provider, Type type) {
-        if(!bank.getAllowedCardTypes().contains(type)){
-            throw new IllegalArgumentException(String.format("The bank %s does not allow type %s", bank.getName(), type));
-        }
         this.cardNumber = cardNumber;
         this.cvv = cvv;
         this.bank = bank;
@@ -72,6 +69,7 @@ public class Card {
     public enum CardProvider {
         VISA,
         MASTER_CARD
+
     }
 
     public enum Type {
