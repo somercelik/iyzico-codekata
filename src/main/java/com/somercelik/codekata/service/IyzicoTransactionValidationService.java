@@ -25,7 +25,7 @@ public class IyzicoTransactionValidationService extends TransactionValidationSer
     public static final String API_BASE_URL = "https://sandbox-api.iyzipay.com";
     private String requestId;
 
-    public Card getCreditCardDetailsFromIyzico(String cardNumber, String cvv) {
+    public Card getCreditCardDetailsFromIyzico(String cardNumber) {
         if(cardNumber == null) {
             return null;
         }
@@ -51,10 +51,10 @@ public class IyzicoTransactionValidationService extends TransactionValidationSer
         Bank bank = BankDataStore.BANKS.stream()
                 .filter(bankItem -> bankItem.getName().equals(detail.getBankName()))
                 .findFirst()
-                .get();
+                .orElseThrow(() -> new RuntimeException(String.format("Bank %s not found in store.", detail.getBankName())));
         Card.CardProvider cardProvider = Card.CardProvider.valueOf(detail.getCardAssociation());
         Card.Type cardType = Card.Type.valueOf(detail.getCardType());
 
-        return new Card(cardNumber, cvv, bank, cardProvider, cardType);
+        return new Card(cardNumber, bank, cardProvider, cardType);
     }
 }

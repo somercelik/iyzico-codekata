@@ -24,14 +24,14 @@ class IyzicoTransactionValidationServiceTest {
     }
 
     @Test
-    void getCreditCardDetailsFromIyzico() {
+    void getCreditCardDetailsFromIyzico() throws Exception {
         Transaction transaction = new Transaction(
                 "001",
                 new Date(),
-                new Card("5890040000000016", "46", BankDataStore.BANKS.get(2), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD),
+                new Card("5890040000000016", BankDataStore.BANKS.get(2), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD),
                 "123"
         );
-        Card testCard = service.getCreditCardDetailsFromIyzico(transaction.getCard().getCardNumber(), transaction.getCard().getCvv());
+        Card testCard = service.getCreditCardDetailsFromIyzico(transaction.getCard().getCardNumber());
         assertEquals(Card.Type.DEBIT_CARD, testCard.getCardType());
         assertEquals(Card.CardProvider.MASTER_CARD, testCard.getProvider());
         assertEquals("Akbank", testCard.getBank().getName());

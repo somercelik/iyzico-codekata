@@ -31,19 +31,32 @@ public class Transaction {
     }
 
     public boolean executeTransaction() {
+        boolean isCardDetailsValid = isCardDetailsValid(this.getCard());
+        if(!isCardDetailsValid) {
+            return false;
+        }
+
         boolean isValidated = new IyzicoTransactionValidationService().validateTransaction(this);
         if(!isValidated) {
             return false;
         }
 
-        boolean isCardDetailsValid = isCardDetailsValid(this.getCard());
-        if(!isCardDetailsValid) {
+        if(!isBankActive(this.getCard().getBank())){
             return false;
         }
+
         this.setStatus(Status.SUCCESS);
         FileWriter.getInstance().outputTransaction(this);
         FileWriter.getInstance().logTransaction(this, new Date());
 
+        return true;
+    }
+
+    private boolean isBankActive(Bank bank) {
+        if(!bank.isActive()) {
+            validationMessage += String.format("The bank %s is not active. ", bank.getName());
+            return false;
+        }
         return true;
     }
 
@@ -55,7 +68,7 @@ public class Transaction {
         return true;
     }
 
-    public Transaction(String id, Date date, Card card, String discountCode) {
+    public Transaction(String id, Date date, Card card, String discountCode) throws Exception {
         this.id = id;
         this.date = date;
         this.ticket = this.getTicketFromDate(date);
@@ -83,14 +96,14 @@ public class Transaction {
         }
     }
 
-    private Ticket getTicketFromDate(Date date) {
+    private Ticket getTicketFromDate(Date date) throws Exception{
         return (Ticket) TicketDataStore.TICKETS.stream()
                 .filter(
                         t -> {
                             return date.after(t.getStartDate()) && date.before(t.getEndDate());
                         })
                 .findFirst()
-                .orElseThrow(RuntimeException::new)
+                .orElseThrow(() -> new Exception("No ticket found for given date"))
                 .clone();
     }
 

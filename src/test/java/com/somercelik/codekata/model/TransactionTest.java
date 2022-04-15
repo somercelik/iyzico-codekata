@@ -23,14 +23,13 @@ class TransactionTest {
         Bank bank = BankDataStore.BANKS.get(0);
         card = new Card(
                 "asdas",
-                "32",
                 bank,
                 Card.CardProvider.MASTER_CARD,
                 Card.Type.CREDIT_CARD);
     }
 
     @Test
-    void testTransaction1() throws ParseException {
+    void testTransaction1() throws Exception {
         Transaction transaction = new Transaction(
                 "001",
                 Utils.parseDate("02.12.2021"),
@@ -41,7 +40,7 @@ class TransactionTest {
     }
 
     @Test
-    void testTransaction2() throws ParseException {
+    void testTransaction2() throws Exception {
         Transaction transaction = new Transaction(
                 "002",
                 Utils.parseDate("02.12.2021"),
@@ -52,7 +51,7 @@ class TransactionTest {
     }
 
     @Test
-    void testTransaction3() throws ParseException {
+    void testTransaction3() throws Exception {
         Transaction transaction = new Transaction(
                 "003",
                 Utils.parseDate("03.03.2022"),
@@ -63,7 +62,7 @@ class TransactionTest {
     }
 
     @Test
-    void testTransaction4() throws ParseException {
+    void testTransaction4() throws Exception {
         Transaction transaction = new Transaction(
                 "004",
                 Utils.parseDate("13.03.2022"),
@@ -74,7 +73,7 @@ class TransactionTest {
     }
 
     @Test
-    void testTransaction5() throws ParseException {
+    void testTransaction5() throws Exception {
         Transaction transaction = new Transaction(
                 "005",
                 Utils.parseDate("13.03.2022"),

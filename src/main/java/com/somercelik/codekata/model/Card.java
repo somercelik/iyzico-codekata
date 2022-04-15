@@ -8,21 +8,19 @@ package com.somercelik.codekata.model;
  */
 public class Card {
     private String cardNumber;
-    private String cvv;
     private Bank bank;
     private CardProvider provider;
     private Type type;
 
-    public Card(String cardNumber, String cvv, Bank bank, CardProvider provider, Type type) {
+    public Card(String cardNumber, Bank bank, CardProvider provider, Type type) {
         this.cardNumber = cardNumber;
-        this.cvv = cvv;
         this.bank = bank;
         this.provider = provider;
         this.type = type;
     }
 
     public Card(Card source) {
-        this(source.cardNumber, source.cvv, source.bank, source.provider, source.type);
+        this(source.cardNumber, source.bank, source.provider, source.type);
     }
 
 
@@ -34,13 +32,6 @@ public class Card {
         this.cardNumber = cardNumber;
     }
 
-    public String getCvv() {
-        return cvv;
-    }
-
-    public void setCvv(String cvv) {
-        this.cvv = cvv;
-    }
 
     public Bank getBank() {
         return bank;

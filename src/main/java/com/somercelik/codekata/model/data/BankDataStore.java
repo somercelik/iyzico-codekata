@@ -24,10 +24,12 @@ public class BankDataStore {
         ArrayList<Card.Type> onlyCredit = new ArrayList<>();
         onlyCredit.add(Card.Type.CREDIT_CARD);
 
-        BANKS.add(new Bank("Garanti Bankası", onlyCredit));
-        BANKS.add(new Bank("İş Bankası", onlyCredit));
-        BANKS.add(new Bank("Akbank", onlyCredit));
-        BANKS.add(new Bank("Finansbank", allTypes));
+        BANKS.add(new Bank("Garanti Bankası", onlyCredit, true));
+        BANKS.add(new Bank("İş Bankası", onlyCredit, true));
+        BANKS.add(new Bank("Akbank", onlyCredit, true));
+        BANKS.add(new Bank("Finansbank", allTypes, true));
+        BANKS.add(new Bank("HSBC", allTypes, false));
+        BANKS.add(new Bank("İş Bankası", allTypes, false));
 
     }
 }

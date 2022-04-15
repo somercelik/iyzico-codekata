@@ -57,4 +57,17 @@ public class Utils {
         fileInputStream.close();
         return lineCount;
     }
+
+    public static String readTextFile(String path) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(path);
+        Scanner scanner = new Scanner(fileInputStream);
+        StringBuilder fileContentBuilder = new StringBuilder();
+        while (scanner.hasNextLine()){
+            fileContentBuilder.append(scanner.nextLine());
+            fileContentBuilder.append("\n");
+        }
+        scanner.close();
+        fileInputStream.close();
+        return fileContentBuilder.toString();
+    }
 }

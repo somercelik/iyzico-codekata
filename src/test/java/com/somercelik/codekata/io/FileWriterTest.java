@@ -22,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class FileWriterTest {
     @Test
-    public void logTransactionTest() throws IOException {
+    public void logTransactionTest() throws Exception {
         int oldLineCount = Utils.getTextFileLineCount("logs.txt");
-        Transaction transaction = new Transaction("001", new Date(), new Card("123123123", "001", BankDataStore.BANKS.get(0), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD), "123");
+        Transaction transaction = new Transaction("001", new Date(), new Card("123123123", BankDataStore.BANKS.get(0), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD), "123");
         FileWriter.getInstance().logTransaction(transaction, new Date());
 
         int newLineCount = Utils.getTextFileLineCount("logs.txt");
@@ -32,10 +32,10 @@ class FileWriterTest {
     }
 
     @Test
-    public void outputTransactionTest() throws IOException {
+    public void outputTransactionTest() throws Exception {
         int oldLineCount = Utils.getTextFileLineCount("output.txt");
 
-        Transaction transaction = new Transaction("001", new Date(), new Card("123123123", "001", BankDataStore.BANKS.get(0), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD), "123");
+        Transaction transaction = new Transaction("001", new Date(), new Card("123123123", BankDataStore.BANKS.get(0), Card.CardProvider.MASTER_CARD, Card.Type.CREDIT_CARD), "123");
         transaction.executeTransaction();
         FileWriter.getInstance().outputTransaction(transaction);
 
